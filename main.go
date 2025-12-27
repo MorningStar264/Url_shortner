@@ -9,9 +9,9 @@ import (
 func main() {
 	fmt.Println("Starting date 25/12/2025")
 
-	conf := settings.GetConfig()
+	config := settings.GetConfig()
 	app := settings.Application{
-		Config: conf,
+		Config: config,
 	}
 	app.Start()
 }

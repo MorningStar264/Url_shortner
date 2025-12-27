@@ -21,10 +21,16 @@ func GetConfig() AppConfig {
 	return config
 }
 
-func (a *Application) Start() {
+func (app *Application) Start() {
+
+	serverConfig:=app.Config.Server
+
 	server := &http.Server{
 		Addr:    ":8080",
-		Handler: a.Config.Server.Handler,
+		Handler: serverConfig.Handler,
+		ReadTimeout: serverConfig.ReadTimeout,
+		WriteTimeout: serverConfig.WriteTimeout,
+		IdleTimeout: serverConfig.IdleTimeout,
 	}
 
 	server.ListenAndServe()
