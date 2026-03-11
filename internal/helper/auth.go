@@ -6,6 +6,7 @@ import (
 	"github.com/golang-jwt/jwt/v5"
 )
 
+// TODO: set_up_env_private_key
 var secretKey = []byte("secret-key")
 
 func CreateToken(username string) (string, error) {

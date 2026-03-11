@@ -4,7 +4,6 @@ import (
 	"context"
 	"fmt"
 	"log"
-	"os"
 	"strings"
 
 	"github.com/MorningStar264/Url_shortner/internal/model"
@@ -25,11 +24,11 @@ func (m *UserMethods) CreateUser(u model.User) {
 	_, err := conn.Exec(context.Background(),
 		"INSERT INTO users (username,email,password_hash) VALUES($1,$2,$3)", u.Username, u.Email, u.PasswordHash)
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Query failed: %v\n", err)
+		log.Printf("Creation failed: %v", err)
 	}
 }
 
-// use id after jwt is implemented
+
 func (m *UserMethods) GetUser(u model.User) model.User {
 	conn := m.server.DB.Pool
 	rows, _ := conn.Query(context.Background(), "select * from users where username=$1 limit 1;", u.Username)
@@ -38,12 +37,10 @@ func (m *UserMethods) GetUser(u model.User) model.User {
 	if err != nil {
 		log.Printf("Fetch failed: %v", err)
 	}
-	fmt.Println(user)
 	return user
 
 }
 
-// use id after jwt is implemented
 func (m *UserMethods) UpdateUser(u model.User) {
 	conn := m.server.DB.Pool
 
@@ -80,11 +77,10 @@ func (m *UserMethods) UpdateUser(u model.User) {
 	}
 }
 
-// use id after jwt is implemented
 func (m *UserMethods) DeleteUser(u model.User) {
 	conn := m.server.DB.Pool
 	_, err := conn.Exec(context.Background(), "DELETE from users where username=$1", u.Username)
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Query failed: %v\n", err)
+		log.Printf("Delete failed: %v", err)
 	}
 }

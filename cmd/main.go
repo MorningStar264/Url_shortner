@@ -19,6 +19,7 @@ import (
 const DefaultContextTimeout = 30
 
 func main() {
+	// Loading the configs form .env
 	cfg, err := config.LoadConfig()
 	if err != nil {
 		panic("failed to load config: " + err.Error())
@@ -31,6 +32,7 @@ func main() {
 	}
 
 	// Initialize repositories, services, and handlers
+	
 	repos := repository.NewRepositories(srv)
 
 	handlers := handler.NewHandlers(srv, repos)

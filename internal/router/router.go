@@ -2,7 +2,7 @@ package router
 
 import (
 	"github.com/MorningStar264/Url_shortner/internal/handler"
-	// "github.com/MorningStar264/Url_shortner/internal/middlewares"
+	"github.com/MorningStar264/Url_shortner/internal/middlewares"
 	"github.com/MorningStar264/Url_shortner/internal/server"
 	"github.com/go-chi/chi"
 	"github.com/go-chi/chi/middleware"
@@ -29,8 +29,7 @@ func NewRouter(s *server.Server, h *handler.Handlers) *chi.Mux {
 
 		//Route for shortening
 		r.Route("/shorten", func(r chi.Router) {
-			// r.With(middlewares.JWT_Auth).Post("/", h.LinkHandler.GenerateShortenedUrl)
-			r.Post("/", h.LinkHandler.GenerateShortenedUrl)
+			r.With(middlewares.JWT_Auth).Post("/", h.LinkHandler.GenerateShortenedUrl)
 		})
 
 		//Route for redirecting

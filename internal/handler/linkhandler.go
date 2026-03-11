@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"net/http"
 
-	// "github.com/MorningStar264/Url_shortner/internal/helper"
 	"github.com/MorningStar264/Url_shortner/internal/model"
 	"github.com/MorningStar264/Url_shortner/internal/repository"
 	"github.com/MorningStar264/Url_shortner/internal/server"
@@ -29,9 +28,7 @@ func (h *LinkHandler) GenerateShortenedUrl(w http.ResponseWriter, r *http.Reques
 	decoder := json.NewDecoder(r.Body)
 	defer r.Body.Close()
 
-	// ensure the unknown field are not there
 	decoder.DisallowUnknownFields()
-	// decoding the data
 	err := decoder.Decode(&l)
 
 	l.ShortCode = h.server.Node.GenerateID()
@@ -40,9 +37,9 @@ func (h *LinkHandler) GenerateShortenedUrl(w http.ResponseWriter, r *http.Reques
 		return
 	}
 	h.repositories.LinkMethods.CreateLink(l)
-	fmt.Println("generate url")
-	fmt.Println(l)
-	w.Write([]byte(l.ShortCode))
+
+	w.WriteHeader(http.StatusOK)
+	fmt.Fprintf(w,"The shortened Url is http://localhost:8080/%s",l.ShortCode)
 }
 func (h *LinkHandler) RedirectUrl(w http.ResponseWriter, r *http.Request) {
 	short_url := chi.URLParam(r, "shortened_Url")
@@ -51,7 +48,7 @@ func (h *LinkHandler) RedirectUrl(w http.ResponseWriter, r *http.Request) {
 	l.ShortCode = short_url
 
 	link := h.repositories.LinkMethods.GetLink(l)
-	fmt.Println("redirecting to ", link.LongURL)
+
 	http.Redirect(w, r, link.LongURL, http.StatusFound)
 
 }
